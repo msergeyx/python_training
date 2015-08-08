@@ -1,1 +1,1 @@
-# python_training
+# Python training for QA Engineers
