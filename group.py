@@ -1,5 +1,6 @@
 __author__ = 'msergeyx'
 
+
 class Group:
     def __init__(self, gr_name, gr_header, gr_footer):
         self.gr_name = gr_name
