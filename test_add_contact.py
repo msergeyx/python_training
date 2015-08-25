@@ -19,6 +19,7 @@ class test_add_contact(unittest.TestCase):
         self.wd.implicitly_wait(60)
 
     def logout(self, wd):
+        self.return_to_homepage(wd)
         wd.find_element_by_link_text("Logout").click()
 
     def return_to_homepage(self, wd):
@@ -98,6 +99,7 @@ class test_add_contact(unittest.TestCase):
 
     def login(self, wd, username, password):
         # Login
+        self.open_homepage(wd)
         wd.find_element_by_id("LoginForm").click()
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
@@ -113,7 +115,6 @@ class test_add_contact(unittest.TestCase):
 
     def test_add_contact(self):
         wd = self.wd
-        self.open_homepage(wd)
         self.login(wd, username="admin", password="secret")
         self.contact_creation(wd, Contact(firstname="ertyuiklkmnbvc",
                                           middlename="dfg",
@@ -132,7 +133,6 @@ class test_add_contact(unittest.TestCase):
                                           second_addr="ertyukjbvcjkmnbbjkl,mnhghjkl",
                                           second_phone="45676789890",
                                           notes="erctvybuniercvybyygvbhjhdtrch"))
-        self.return_to_homepage(wd)
         self.logout(wd)
 
     def tearDown(self):

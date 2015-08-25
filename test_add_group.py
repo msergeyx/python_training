@@ -18,12 +18,14 @@ class test_add_group(unittest.TestCase):
         self.wd.implicitly_wait(60)
 
     def logout(self, wd):
+        self.return_to_group_page(wd)
         wd.find_element_by_link_text("Logout").click()
 
     def return_to_group_page(self, wd):
         wd.find_element_by_link_text("group page").click()
 
     def group_creation(self, wd, group):
+        self.open_group_page(wd)
         # Init group creation
         wd.find_element_by_name("new").click()
         # Fill group forms
@@ -43,6 +45,7 @@ class test_add_group(unittest.TestCase):
         wd.find_element_by_link_text("groups").click()
 
     def login(self, wd, username, password):
+        self.open_homepage(wd)
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
@@ -57,20 +60,14 @@ class test_add_group(unittest.TestCase):
 
     def test_add_group(self):
         wd = self.wd
-        self.open_homepage(wd)
         self.login(wd, username="admin", password="secret")
-        self.open_group_page(wd)
         self.group_creation(wd, Group(gr_name="uyrms", gr_header="sfjns", gr_footer="kdjfshn"))
-        self.return_to_group_page(wd)
         self.logout(wd)
 
     def test_add_empty_group(self):
         wd = self.wd
-        self.open_homepage(wd)
         self.login(wd, username="admin", password="secret")
-        self.open_group_page(wd)
         self.group_creation(wd, Group(gr_name="", gr_header="", gr_footer=""))
-        self.return_to_group_page(wd)
         self.logout(wd)
 
     def tearDown(self):
