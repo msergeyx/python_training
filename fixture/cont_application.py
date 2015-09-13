@@ -2,21 +2,14 @@ __author__ = 'msergeyx'
 
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support.ui import Select
+from fixture.session import SessionHelper
 
 
 class ContApplication():
     def __init__(self):
         self.wd = WebDriver()
         self.wd.implicitly_wait(60)
-
-    def logout(self):
-        wd = self.wd
-        self.return_to_homepage()
-        wd.find_element_by_link_text("Logout").click()
-
-    def return_to_homepage(self):
-        wd = self.wd
-        wd.find_element_by_link_text("home page").click()
+        self.session = SessionHelper(self)
 
     def contact_creation(self, contact):
         wd = self.wd
@@ -90,19 +83,6 @@ class ContApplication():
         wd.find_element_by_name("notes").send_keys(contact.notes)
         # submit contact creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
-
-    def login(self, username, password):
-        wd = self.wd
-        # Login
-        self.open_homepage()
-        wd.find_element_by_id("LoginForm").click()
-        wd.find_element_by_name("user").click()
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys(username)
-        wd.find_element_by_name("pass").click()
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys(password)
-        wd.find_element_by_css_selector("input[type=\"submit\"]").click()
 
     def open_homepage(self):
         wd = self.wd
