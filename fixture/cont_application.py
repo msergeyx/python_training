@@ -5,7 +5,7 @@ from fixture.session import SessionHelper
 from fixture.contact import ContactHelper
 
 
-class ContApplication():
+class Application:
     def __init__(self):
         self.wd = WebDriver()
         self.wd.implicitly_wait(60)
@@ -14,8 +14,7 @@ class ContApplication():
 
     def open_homepage(self):
         wd = self.wd
-        # Open homepage
         wd.get("http://localhost/addressbook/")
 
-    def destroying(self):
+    def destroy(self):
         self.wd.quit()
