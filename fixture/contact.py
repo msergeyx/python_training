@@ -90,20 +90,44 @@ class ContactHelper:
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
 
-    def modify_first_contact(self):
+    def change_field_value(self, field_name, text):
+        wd = self.app.wd
+        if text is not None:
+            wd.find_element_by_name(field_name).click()
+            wd.find_element_by_name(field_name).clear()
+            wd.find_element_by_name(field_name).send_keys(text)
+
+    def modify_first_contact(self, contact):
         wd = self.app.wd
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
-        # Fill first name
-        wd.find_element_by_name("firstname").click()
-        wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys("hgdscjdcjklmk")
-        # Fill middle name
-        wd.find_element_by_name("middlename").click()
-        wd.find_element_by_name("middlename").clear()
-        wd.find_element_by_name("middlename").send_keys("dfhndmo")
-        # Fill last name
-        wd.find_element_by_name("lastname").click()
-        wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys("ksdkmpokdm")
+        self.change_field_value("firstname", contact.firstname)
+        self.change_field_value("middlename", contact.middlename)
+        self.change_field_value("lastname", contact.lastname)
+        self.change_field_value("nickname", contact.nick)
+        self.change_field_value("title", contact.tytle)
+        self.change_field_value("company", contact.company)
+        self.change_field_value("address", contact.address)
+        self.change_field_value("home", contact.home_tel)
+        self.change_field_value("mobile", contact.mobile_tel)
+        self.change_field_value("work", contact.work_tel)
+        self.change_field_value("fax", contact.fax)
+        self.fill_bday_date(contact.birth_day)
+        self.fill_bday_month(contact.birth_month)
+        self.change_field_value("byear", contact.birth_year)
+        self.change_field_value("address2", contact.second_addr)
+        self.change_field_value("phone2", contact.second_phone)
+        self.change_field_value("notes", contact.notes)
         wd.find_element_by_name("update").click()
         self.return_to_homepage()
+
+    def fill_bday_month(self, text):
+        wd = self.app.wd
+        if text is not None:
+            select = Select(wd.find_element_by_xpath("//div[@id='content']/form/select[2]"))
+            select.select_by_visible_text(text)
+
+    def fill_bday_date(self, text):
+        wd = self.app.wd
+        if text is not None:
+            select = Select(wd.find_element_by_xpath("//div[@id='content']/form/select[1]"))
+            select.select_by_visible_text(text)
