@@ -12,6 +12,8 @@ class ContactHelper:
 
     def go_home(self):
         wd = self.app.wd
+        if wd.current_url.endswith("addressbook/") and len(wd.find_elements_by_xpath("//input[@value='Send e-Mail']")) > 0:
+            return
         wd.find_element_by_xpath("//img[@title='Addressbook']").click()
 
     def create(self, contact):
