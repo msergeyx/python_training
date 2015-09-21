@@ -3,6 +3,8 @@ from model.contact import Contact
 
 
 def test_full_modify_first_contact(app):
+    if app.contact.contactcount() == 0:
+        app.contact.create(Contact(firstname="hghjdsfni4389"))
     app.contact.modify_first_contact(Contact(firstname="ertyuiklkmnbvc",
                                           middlename="dfg",
                                           lastname="sdfghjk",
@@ -23,4 +25,6 @@ def test_full_modify_first_contact(app):
 
 
 def test_modify_first_contact_base_info(app):
+    if app.contact.contactcount() == 0:
+        app.contact.create(Contact(firstname="hghjdsfni4389"))
     app.contact.modify_first_contact(Contact(firstname="rtyjnbvyujk", lastname="57hgffdfg", mobile_tel="67843234", birth_year="1386"))
