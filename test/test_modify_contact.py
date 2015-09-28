@@ -25,8 +25,8 @@ def test_full_modify_first_contact(app):
                                           notes="erctvybuniercvybyygvbhjhdtrch")
     contact.id = old_contacts[0].id
     app.contact.modify_first_contact(contact)
+    assert len(old_contacts) == app.contact.contactcount()
     new_contacts = app.contact.get_cont_list()
-    assert len(old_contacts) == len(new_contacts)
     old_contacts[0] = contact
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
 
