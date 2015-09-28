@@ -41,6 +41,7 @@ class ContactHelper:
         # submit contact creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.return_to_homepage()
+        self.cont_cache = None
 
     def delete_first_cont(self):
         wd = self.app.wd
@@ -48,6 +49,7 @@ class ContactHelper:
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
+        self.cont_cache = None
 
     def change_field_value(self, field_name, text):
         wd = self.app.wd
@@ -79,6 +81,7 @@ class ContactHelper:
         self.change_field_value("notes", contact.notes)
         wd.find_element_by_name("update").click()
         self.return_to_homepage()
+        self.cont_cache = None
 
     def fill_bday_month(self, text):
         wd = self.app.wd
@@ -97,14 +100,17 @@ class ContactHelper:
         self.go_home()
         return len(wd.find_elements_by_name("selected[]"))
 
+    cont_cache = None
+
     def get_cont_list(self):
-        wd = self.app.wd
-        self.go_home()
-        contacts = []
-        for element in wd.find_elements_by_css_selector("tr[name='entry']"):
-            elem_info = element.find_elements_by_tag_name('td')
-            fname = elem_info[2].text
-            lname = elem_info[1].text
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            contacts.append(Contact(firstname=fname, lastname=lname, id=id))
-        return contacts
+        if self.cont_cache is None:
+            wd = self.app.wd
+            self.go_home()
+            self.cont_cache = []
+            for element in wd.find_elements_by_css_selector("tr[name='entry']"):
+                elem_info = element.find_elements_by_tag_name('td')
+                fname = elem_info[2].text
+                lname = elem_info[1].text
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                self.cont_cache.append(Contact(firstname=fname, lastname=lname, id=id))
+        return list(self.cont_cache)
