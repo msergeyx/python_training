@@ -44,12 +44,22 @@ class ContactHelper:
         self.cont_cache = None
 
     def delete_first_cont(self):
+        self.delete_cont_by_index(0)
+
+    def select_cont_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
+
+    def delete_cont_by_index(self, index):
         wd = self.app.wd
         self.go_home()
-        wd.find_element_by_name("selected[]").click()
+        self.select_cont_by_index(index)
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
         self.cont_cache = None
+
+    def select_first_cont(self):
+        self.select_cont_by_index(0)
 
     def change_field_value(self, field_name, text):
         wd = self.app.wd
@@ -58,10 +68,13 @@ class ContactHelper:
             wd.find_element_by_name(field_name).clear()
             wd.find_element_by_name(field_name).send_keys(text)
 
-    def modify_first_contact(self, contact):
+    def modify_first_contact(self):
+        self.modify_contact_by_index(0)
+
+    def modify_contact_by_index(self, index, contact):
         wd = self.app.wd
         self.go_home()
-        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
         self.change_field_value("firstname", contact.firstname)
         self.change_field_value("middlename", contact.middlename)
         self.change_field_value("lastname", contact.lastname)

@@ -1,11 +1,13 @@
 __author__ = 'msergeyx'
 from model.contact import Contact
+from random import randrange
 
 
-def test_full_modify_first_contact(app):
+def test_full_modify_some_contact(app):
     if app.contact.contactcount() == 0:
         app.contact.create(Contact(firstname="hghjdsfni4389"))
     old_contacts = app.contact.get_cont_list()
+    index = randrange(len(old_contacts))
     contact = Contact(firstname="ertyuiklkmnbvc",
                                           middlename="dfg",
                                           lastname="sdfghjk",
@@ -23,11 +25,11 @@ def test_full_modify_first_contact(app):
                                           second_addr="ertyukjbvcjkmnbbjkl,mnhghjkl",
                                           second_phone="45676789890",
                                           notes="erctvybuniercvybyygvbhjhdtrch")
-    contact.id = old_contacts[0].id
-    app.contact.modify_first_contact(contact)
+    contact.id = old_contacts[index].id
+    app.contact.modify_contact_by_index(index, contact)
     assert len(old_contacts) == app.contact.contactcount()
     new_contacts = app.contact.get_cont_list()
-    old_contacts[0] = contact
+    old_contacts[index] = contact
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
 
 
