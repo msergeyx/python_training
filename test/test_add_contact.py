@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from model.contact import Contact
+from sys import maxsize
 
 
 def test_add_contact(app):
-    app.contact.create(Contact(firstname="ertyuiklkmnbvc",
+    old_contacts = app.contact.get_cont_list()
+    contact = Contact(firstname="ertyuiklkmnbvc",
                                           middlename="dfg",
                                           lastname="sdfghjk",
                                           nick="rtlkjhkl",
@@ -19,4 +21,9 @@ def test_add_contact(app):
                                           birth_year="1985",
                                           second_addr="ertyukjbvcjkmnbbjkl,mnhghjkl",
                                           second_phone="45676789890",
-                                          notes="erctvybuniercvybyygvbhjhdtrch"))
+                                          notes="erctvybuniercvybyygvbhjhdtrch")
+    app.contact.create(contact)
+    new_contacts = app.contact.get_cont_list()
+    assert len(old_contacts) + 1 == len(new_contacts)
+    old_contacts.append(contact)
+    assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)

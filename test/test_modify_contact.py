@@ -5,7 +5,8 @@ from model.contact import Contact
 def test_full_modify_first_contact(app):
     if app.contact.contactcount() == 0:
         app.contact.create(Contact(firstname="hghjdsfni4389"))
-    app.contact.modify_first_contact(Contact(firstname="ertyuiklkmnbvc",
+    old_contacts = app.contact.get_cont_list()
+    contact = Contact(firstname="ertyuiklkmnbvc",
                                           middlename="dfg",
                                           lastname="sdfghjk",
                                           nick="rtlkjhkl",
@@ -21,10 +22,19 @@ def test_full_modify_first_contact(app):
                                           birth_year="1985",
                                           second_addr="ertyukjbvcjkmnbbjkl,mnhghjkl",
                                           second_phone="45676789890",
-                                          notes="erctvybuniercvybyygvbhjhdtrch"))
+                                          notes="erctvybuniercvybyygvbhjhdtrch")
+    contact.id = old_contacts[0].id
+    app.contact.modify_first_contact(contact)
+    new_contacts = app.contact.get_cont_list()
+    assert len(old_contacts) == len(new_contacts)
+    old_contacts[0] = contact
+    assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
 
 
-def test_modify_first_contact_base_info(app):
+"""def test_modify_first_contact_base_info(app):
     if app.contact.contactcount() == 0:
         app.contact.create(Contact(firstname="hghjdsfni4389"))
-    app.contact.modify_first_contact(Contact(firstname="rtyjnbvyujk", lastname="57hgffdfg", mobile_tel="67843234", birth_year="1386"))
+    old_contacts = app.contact.get_cont_list()
+    app.contact.modify_first_contact(Contact(firstname="rtyjnbvyujk", lastname="hgffdfg", mobile_tel="67843234", birth_year="1386"))
+    new_contacts = app.contact.get_cont_list()
+    assert len(old_contacts) == len(new_contacts)"""
