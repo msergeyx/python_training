@@ -125,5 +125,26 @@ class ContactHelper:
                 fname = elem_info[2].text
                 lname = elem_info[1].text
                 id = element.find_element_by_name("selected[]").get_attribute("value")
-                self.cont_cache.append(Contact(firstname=fname, lastname=lname, id=id))
+                all_phones = elem_info[5].text.splitlines()
+                self.cont_cache.append(Contact(firstname=fname, lastname=lname, id=id, home_tel=all_phones[0],
+                                               mobile_tel=all_phones[1], work_tel=all_phones[2], second_phone=all_phones[3]))
         return list(self.cont_cache)
+
+    def open_cont_to_edit_by_index(self, index):
+        wd = self.app.wd
+        self.go_home()
+        row = wd.find_elements_by_name("entry")[index]
+        cell = row.find_elements_by_tag_name("td")[7]
+        cell.find_element_by_tag_name("a").click()
+
+    def get_cont_info_from_edit_page(self, index):
+        wd = self.app.wd
+        self.open_cont_to_edit_by_index(index)
+        fname = wd.find_element_by_name("firstname").get_attribute("value")
+        lname = wd.find_element_by_name("lastname").get_attribute("value")
+        id = wd.find_element_by_name("id").get_attribute("value")
+        home_tel = wd.find_element_by_name("home").get_attribute("value")
+        mobile_tel = wd.find_element_by_name("mobile").get_attribute("value")
+        work_tel = wd.find_element_by_name("work").get_attribute("value")
+        sec_phone = wd.find_element_by_name("phone2").get_attribute("value")
+        return Contact(firstname=fname, lastname=lname, id=id, home_tel=home_tel, mobile_tel=mobile_tel, work_tel=work_tel, second_phone=sec_phone)
