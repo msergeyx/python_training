@@ -1,6 +1,7 @@
 __author__ = 'msergeyx'
 from model.contact import Contact
 from selenium.webdriver.support.ui import Select
+import re
 
 
 class ContactHelper:
@@ -125,9 +126,8 @@ class ContactHelper:
                 fname = elem_info[2].text
                 lname = elem_info[1].text
                 id = element.find_element_by_name("selected[]").get_attribute("value")
-                all_phones = elem_info[5].text.splitlines()
-                self.cont_cache.append(Contact(firstname=fname, lastname=lname, id=id, home_tel=all_phones[0],
-                                               mobile_tel=all_phones[1], work_tel=all_phones[2], second_phone=all_phones[3]))
+                all_phones = elem_info[5].text
+                self.cont_cache.append(Contact(firstname=fname, lastname=lname, id=id, all_phones_from_home_page=all_phones))
         return list(self.cont_cache)
 
     def open_cont_to_edit_by_index(self, index):
@@ -147,4 +147,23 @@ class ContactHelper:
         mobile_tel = wd.find_element_by_name("mobile").get_attribute("value")
         work_tel = wd.find_element_by_name("work").get_attribute("value")
         sec_phone = wd.find_element_by_name("phone2").get_attribute("value")
-        return Contact(firstname=fname, lastname=lname, id=id, home_tel=home_tel, mobile_tel=mobile_tel, work_tel=work_tel, second_phone=sec_phone)
+        return Contact(firstname=fname, lastname=lname, id=id, home_tel=home_tel,
+                       mobile_tel=mobile_tel, work_tel=work_tel, second_phone=sec_phone)
+
+    def open_cont_view_page_by_index(self, index):
+        wd = self.app.wd
+        self.go_home()
+        row = wd.find_elements_by_name("entry")[index]
+        cell = row.find_elements_by_tag_name("td")[6]
+        cell.find_element_by_tag_name("a").click()
+
+
+    def get_cont_from_view_page(self, index):
+        wd = self.app.wd
+        self.open_cont_view_page_by_index(index)
+        text = wd.find_element_by_id("content").text
+        home_tel = re.search("H: (.*)", text).group(1)
+        mobile_tel = re.search("M: (.*)", text).group(1)
+        work_tel = re.search("W: (.*)", text).group(1)
+        sec_phone = re.search("P: (.*)", text).group(1)
+        return Contact(home_tel=home_tel, mobile_tel=mobile_tel, work_tel=work_tel, second_phone=sec_phone)
