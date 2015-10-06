@@ -157,7 +157,6 @@ class ContactHelper:
         cell = row.find_elements_by_tag_name("td")[6]
         cell.find_element_by_tag_name("a").click()
 
-
     def get_cont_from_view_page(self, index):
         wd = self.app.wd
         self.open_cont_view_page_by_index(index)
@@ -167,3 +166,14 @@ class ContactHelper:
         work_tel = re.search("W: (.*)", text).group(1)
         sec_phone = re.search("P: (.*)", text).group(1)
         return Contact(home_tel=home_tel, mobile_tel=mobile_tel, work_tel=work_tel, second_phone=sec_phone)
+
+    def get_contact_info_from_home_page(self, index):
+        wd = self.app.wd
+        self.go_home()
+        element = wd.find_elements_by_name("entry")[index]
+        id = element.find_element_by_name("selected[]").get_attribute("value")
+        fname = element[2].text
+        lname = element[1].text
+        email = element[4].text
+        addr = element[3].text
+        all_phones = element[5].text
