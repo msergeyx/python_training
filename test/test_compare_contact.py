@@ -10,17 +10,17 @@ def test_compare_contact_on_home_page(app):
     cont_from_edit_page = app.contact.get_cont_info_from_edit_page(index)
     assert cont_from_home_page.firstname == cont_from_edit_page.firstname
     assert cont_from_home_page.lastname == cont_from_edit_page.lastname
-    assert cont_from_home_page.address == cont_from_edit_page.address
-    assert clear_mail(cont_from_home_page.email) == clear_mail(cont_from_edit_page.email)
+    assert clear(cont_from_home_page.address) == clear(cont_from_edit_page.address)
+    assert clear(cont_from_home_page.email) == clear(cont_from_edit_page.email)
     assert cont_from_home_page.all_phones_from_home_page == merge_phones_like_on_home_page(cont_from_edit_page)
 
 
-def clear_mail(s):
+def clear(s):
     return re.sub("[. -+]", "", s)
 
 
 def merge_phones_like_on_home_page(contact):
     return "\n".join(filter(lambda x: x != "",
-                            map(lambda x: clear_mail(x),
+                            map(lambda x: clear(x),
                                 filter(lambda x: x is not None,
                                        [contact.home_tel, contact.mobile_tel, contact.work_tel, contact.second_phone]))))
