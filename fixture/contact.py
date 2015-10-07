@@ -141,14 +141,20 @@ class ContactHelper:
         wd = self.app.wd
         self.open_cont_to_edit_by_index(index)
         fname = wd.find_element_by_name("firstname").get_attribute("value")
+        mname = wd.find_element_by_name("middlename").get_attribute("value")
         lname = wd.find_element_by_name("lastname").get_attribute("value")
         id = wd.find_element_by_name("id").get_attribute("value")
+        company = wd.find_element_by_name("company").get_attribute("value")
         home_tel = wd.find_element_by_name("home").get_attribute("value")
         mobile_tel = wd.find_element_by_name("mobile").get_attribute("value")
         work_tel = wd.find_element_by_name("work").get_attribute("value")
         sec_phone = wd.find_element_by_name("phone2").get_attribute("value")
-        return Contact(firstname=fname, lastname=lname, id=id, home_tel=home_tel,
-                       mobile_tel=mobile_tel, work_tel=work_tel, second_phone=sec_phone)
+        #email = wd.find_element_by_name("email").get_attribute("value")
+        email = "%s%s%s@%s" % (fname, lname, mname, company)
+        address = wd.find_element_by_name("address").get_attribute("value")
+        return Contact(firstname=fname, middlename=mname, lastname=lname, id=id, home_tel=home_tel,
+                       mobile_tel=mobile_tel, work_tel=work_tel, second_phone=sec_phone, email=email, address=address,
+                       company=company)
 
     def open_cont_view_page_by_index(self, index):
         wd = self.app.wd
@@ -171,9 +177,12 @@ class ContactHelper:
         wd = self.app.wd
         self.go_home()
         element = wd.find_elements_by_name("entry")[index]
+        elem_info = element.find_elements_by_tag_name('td')
         id = element.find_element_by_name("selected[]").get_attribute("value")
-        fname = element[2].text
-        lname = element[1].text
-        email = element[4].text
-        addr = element[3].text
-        all_phones = element[5].text
+        firstname = elem_info[2].text
+        lastname = elem_info[1].text
+        email = elem_info[4].text
+        address = elem_info[3].text
+        all_phones = elem_info[5].text
+        return Contact(firstname=firstname, lastname=lastname, id=id, email=email, address=address, all_phones_from_home_page=all_phones)
+
