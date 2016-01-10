@@ -16,7 +16,7 @@ testdata = [
             mobile_tel=random_string("mtel", 15), work_tel=random_string("wtel", 15), fax=random_string("fax", 15),
             birth_day="2", birth_month="October", birth_year="1985", second_addr=random_string("saddr2", 40), second_phone=random_string("stel", 18),
             notes=random_string("note", 80))
-    for i in range(5)
+    for i in range(20)
 ]
 
 

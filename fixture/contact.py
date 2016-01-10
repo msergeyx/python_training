@@ -177,7 +177,7 @@ class ContactHelper:
         wd = self.app.wd
         self.go_home()
         element = wd.find_elements_by_name("entry")[index]
-        elem_info = element.find_elements_by_tag_name('td')
+        elem_info = element.find_elements_by_tag_name("td")
         id = element.find_element_by_name("selected[]").get_attribute("value")
         firstname = elem_info[2].text
         lastname = elem_info[1].text
