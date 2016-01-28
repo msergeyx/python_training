@@ -8,7 +8,7 @@ def test_del_some_contact(app, db, check_ui):
         app.contact.create(Contact(firstname="4567ghvhjk"))
     old_contacts = db.get_cont_list()
     contact = random.choice(old_contacts)
-    app.contact.delete_cont_by_id(contact.id)
+    app.contact.delete_cont_by_id(int(contact.id))
     assert len(old_contacts) - 1 == app.contact.contactcount()
     new_contacts = db.get_cont_list()
     old_contacts.remove(contact)

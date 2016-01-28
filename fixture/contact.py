@@ -53,7 +53,7 @@ class ContactHelper:
 
     def select_cont_by_id(self, id):
         wd = self.app.wd
-        wd.find_element_by_xpath("//tr[@name='entry']/td[0]/input[@id='%s']" % id).click()
+        wd.find_element_by_xpath("//input[@id='%s']" % id).click()
 
     def delete_cont_by_index(self, index):
         wd = self.app.wd
@@ -112,7 +112,7 @@ class ContactHelper:
     def modify_contact_by_id(self, id, contact):
         wd = self.app.wd
         self.go_home()
-        wd.find_element_by_xpath("//tr[@name='entry']/td[0]/input[@id='%s']" % id).click()
+        wd.find_element_by_xpath("//a[@href='edit.php?id=%s']" % id).click()
         self.change_field_value("firstname", contact.firstname)
         self.change_field_value("middlename", contact.middlename)
         self.change_field_value("lastname", contact.lastname)

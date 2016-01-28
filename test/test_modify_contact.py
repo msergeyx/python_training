@@ -25,7 +25,7 @@ def test_full_modify_some_contact(app, db, check_ui):
                                           second_addr="ertyukjbvcjkmnbbjkl,mnhghjkl",
                                           second_phone="45676789890",
                                           notes="erctvybuniercvybyygvbhjhdtrch")
-    app.contact.modify_contact_by_id(index.id, contact)
+    app.contact.modify_contact_by_id(int(index.id), contact)
     assert len(old_contacts) == app.contact.contactcount()
     new_contacts = db.get_cont_list()
     old_contacts[index] = contact
