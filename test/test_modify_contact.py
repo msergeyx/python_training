@@ -1,13 +1,13 @@
 __author__ = 'msergeyx'
 from model.contact import Contact
-from random import randrange
+import random
 
 
-def test_full_modify_some_contact(app):
-    if app.contact.contactcount() == 0:
+def test_full_modify_some_contact(app, db, check_ui):
+    if len(db.get_cont_list()) == 0:
         app.contact.create(Contact(firstname="hghjdsfni4389"))
-    old_contacts = app.contact.get_cont_list()
-    index = randrange(len(old_contacts))
+    old_contacts = db.get_cont_list()
+    index = random.choice(old_contacts)
     contact = Contact(firstname="ertyuiklkmnbvc",
                                           middlename="dfg",
                                           lastname="sdfghjk",
@@ -25,12 +25,13 @@ def test_full_modify_some_contact(app):
                                           second_addr="ertyukjbvcjkmnbbjkl,mnhghjkl",
                                           second_phone="45676789890",
                                           notes="erctvybuniercvybyygvbhjhdtrch")
-    contact.id = old_contacts[index].id
-    app.contact.modify_contact_by_index(index, contact)
+    app.contact.modify_contact_by_id(index.id, contact)
     assert len(old_contacts) == app.contact.contactcount()
-    new_contacts = app.contact.get_cont_list()
+    new_contacts = db.get_cont_list()
     old_contacts[index] = contact
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
+    if check_ui:
+        assert sorted(new_contacts, key=Contact.id_or_max()) == sorted(app.group.get_group_list(), key=Contact.id_or_max())
 
 
 """def test_modify_first_contact_base_info(app):

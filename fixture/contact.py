@@ -51,10 +51,22 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
 
+    def select_cont_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_xpath("//tr[@name='entry']/td[0]/input[@id='%s']" % id).click()
+
     def delete_cont_by_index(self, index):
         wd = self.app.wd
         self.go_home()
         self.select_cont_by_index(index)
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.switch_to_alert().accept()
+        self.cont_cache = None
+
+    def delete_cont_by_id(self, id):
+        wd = self.app.wd
+        self.go_home()
+        self.select_cont_by_id(id)
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
         self.cont_cache = None
@@ -76,6 +88,31 @@ class ContactHelper:
         wd = self.app.wd
         self.go_home()
         wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
+        self.change_field_value("firstname", contact.firstname)
+        self.change_field_value("middlename", contact.middlename)
+        self.change_field_value("lastname", contact.lastname)
+        self.change_field_value("nickname", contact.nick)
+        self.change_field_value("title", contact.tytle)
+        self.change_field_value("company", contact.company)
+        self.change_field_value("address", contact.address)
+        self.change_field_value("home", contact.home_tel)
+        self.change_field_value("mobile", contact.mobile_tel)
+        self.change_field_value("work", contact.work_tel)
+        self.change_field_value("fax", contact.fax)
+        self.fill_bday_date(contact.birth_day)
+        self.fill_bday_month(contact.birth_month)
+        self.change_field_value("byear", contact.birth_year)
+        self.change_field_value("address2", contact.second_addr)
+        self.change_field_value("phone2", contact.second_phone)
+        self.change_field_value("notes", contact.notes)
+        wd.find_element_by_name("update").click()
+        self.return_to_homepage()
+        self.cont_cache = None
+
+    def modify_contact_by_id(self, id, contact):
+        wd = self.app.wd
+        self.go_home()
+        wd.find_element_by_xpath("//tr[@name='entry']/td[0]/input[@id='%s']" % id).click()
         self.change_field_value("firstname", contact.firstname)
         self.change_field_value("middlename", contact.middlename)
         self.change_field_value("lastname", contact.lastname)
