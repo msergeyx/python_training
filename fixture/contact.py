@@ -162,9 +162,12 @@ class ContactHelper:
                 elem_info = element.find_elements_by_tag_name('td')
                 fname = elem_info[2].text
                 lname = elem_info[1].text
+                email = elem_info[4].text
+                addr = elem_info[3].text
                 id = element.find_element_by_name("selected[]").get_attribute("value")
                 all_phones = elem_info[5].text
-                self.cont_cache.append(Contact(firstname=fname, lastname=lname, id=id, all_phones_from_home_page=all_phones))
+                self.cont_cache.append(Contact(firstname=fname, lastname=lname, id=id,
+                                               all_phones_from_home_page=all_phones, email=email, address=addr))
         return list(self.cont_cache)
 
     def open_cont_to_edit_by_index(self, index):
